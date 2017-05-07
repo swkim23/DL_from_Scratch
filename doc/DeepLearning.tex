@@ -89,7 +89,29 @@
 $t_{k}$는 원-핫 인코딩으로 표기 했기 때문에 정답에 해당하는 값만 1이고 나머지는 0이다. 따라서 $t_{k}$의 총합 또한 항상 1이다. 따라서 이들의 평균을 구하기 위해서는 N이 아닌 2로 나누어야 한다.
 
 평균 제곱 오차의 값이 작을 수록 정답에 가깝고 값이 클 수록 정답이 아님을 의미한다.
-\subsubsection{교차 엔트로피}
-교차 엔트로피는 
+	\subsubsection{교차 엔트로피}
+	교차 엔트로피는 
+
+\subsection{ 편미분}
+\begin{lstlisting}[language=Python, caption={Python으로 구현한 편미분 함수},label=gradient-function]
+def numerical_gradient(f, x):
+	h = 1e-4
+	grad = np.zeros_like(x)
+
+	for idx in range(x.size):
+		tmp_val = x[idx]
+		x[idx] = tmp_val + h
+		fxh1 = f(x)
+
+		x[idx] = tmp_val - h
+		fxh2 = f(x)
+
+		grad[idx] = (fxh1 - fxh2) / (2*h)
+		x[idx] = tmp_val
+
+	return grad
+\end{lstlisting}
+
+Listing \ref{gradient-function}은 편미분을 구하는 python함수이다. Line1의 함수의 선언에서와 같이 편미분을 구하는 numerical\_gradient함수는 인자로 편미분을 구하고자 하는 함수 f와 그때의 좌표를 np.array형인 x로 받는다.
 
 \end{document}          
