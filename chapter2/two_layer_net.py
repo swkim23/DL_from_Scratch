@@ -8,8 +8,8 @@ Created on Thu May  4 18:50:54 2017
 
 import sys, os
 sys.path.append(os.pardir)
-
-from ANN import sigmoid, softmax
+from common.functions import *
+from common.gradient import numerical_gradient
 
 class TwoLayerNet:
     def __init__ (self, input_size, hidden_size, output_size, 
@@ -35,4 +35,33 @@ class TwoLayerNet:
     
     def loss(self, x, t):
         y = self.predict(x)
+        
+        return cross_entropy_error(y,t)
+    
+    def accuracy(self, x, t):
+        y = self.predict(x)
+        y = np.argmax(y, axis = 1)
+        t = np.argmax(t, axis = 1)
+
+        accuracy = np.sum(y == t) / float(x.shape[0])
+        return accuracy
+    
+    def numerical_gradient(self, x, t):
+        loss_W = lambda W: self.loss(x, t)
+        
+        grads = {}
+        grads['W1'] = numerical_gradient(loss_W, self.params['W1'])
+        grads['b1'] = numerical_gradient(loss_W, self.params['b1'])
+        grads['W2'] = numerical_gradient(loss_W, self.params['W2'])
+        grads['b2'] = numerical_gradient(loss_W, self.params['b2'])
+        
+        return grads
+
+
+net = TwoLayerNet(input_size = 784, hidden_size=100, output_size=10)
+x = np.random.rand(100, 784)
+y = net.predict(x)
+t = np.random.rand(100,10)
+#grads=net.numerical_gradient(x,t)
+
         

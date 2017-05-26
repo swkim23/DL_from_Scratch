@@ -4,8 +4,8 @@
 
 %%%%%%%%%%%%%%%
 % Title Page
-\title{ccOS Lifecycle}
-\author{Infotainment Software Development Team \newline Hyundai Motor Company \newline }
+\title{Study Note for Deep Learning}
+\author{Se Won Kim}
 \date{\today}
 %%%%%%%%%%%%%%%
 
@@ -17,13 +17,14 @@
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% 본문의 시작 
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+	\input{intro.tex}
+	
+	
+	\input{perceptron.tex}
+
 	\clearpage
-	\section{서론}
-	
-	편향(bias)는 뉴런이 얼마나 쉽게 활성화 되는지를 제어한다.
-	가중치는 각 신호의 영향력을 의미한다.
-	
-	\subsection{목적}
+	\section{신경망}
 	
 	\begin{figure}[!h] %신경망 예시 그림
 		\centering
@@ -32,13 +33,6 @@
 	\end{figure}
 	
 	
-	Perceptron은 복잡한 함수도 표현이 가능하다. 심지어 다층 퍼셉트론은 컴퓨터도 표현 가능하다.
-	하지만, 퍼셉트론의 가중치를 설정하는 것은 여전히 사람에 의해서만 가능하다.
-	
-	신경망은 데이터로 부터 퍼셉트론의 가중치 설정을 자동으로 한다.
-	
-	\clearpage
-	\section{신경망}
 	입력층, 은닉층, 출력층 으로 구성
 	활성화 함수 - 입력 신호의 총합을 출력 신호로 변환
 	
@@ -89,7 +83,42 @@
 $t_{k}$는 원-핫 인코딩으로 표기 했기 때문에 정답에 해당하는 값만 1이고 나머지는 0이다. 따라서 $t_{k}$의 총합 또한 항상 1이다. 따라서 이들의 평균을 구하기 위해서는 N이 아닌 2로 나누어야 한다.
 
 평균 제곱 오차의 값이 작을 수록 정답에 가깝고 값이 클 수록 정답이 아님을 의미한다.
-\subsubsection{교차 엔트로피}
-교차 엔트로피는 
+	\subsubsection{교차 엔트로피}
+	교차 엔트로피는 
+
+\subsection{ 편미분}
+\begin{lstlisting}[language=Python, caption={Python으로 구현한 편미분 함수},label=gradient-function]
+def numerical_gradient(f, x):
+	h = 1e-4
+	grad = np.zeros_like(x)
+
+	for idx in range(x.size):
+		tmp_val = x[idx]
+		x[idx] = tmp_val + h
+		fxh1 = f(x)
+
+		x[idx] = tmp_val - h
+		fxh2 = f(x)
+
+		grad[idx] = (fxh1 - fxh2) / (2*h)
+		x[idx] = tmp_val
+
+	return grad
+\end{lstlisting}
+
+Listing \ref{gradient-function}은 편미분을 구하는 python함수이다. Line1의 함수의 선언에서와 같이 편미분을 구하는 numerical\_gradient함수는 인자로 편미분을 구하고자 하는 함수 f와 그때의 좌표를 np.array형인 x로 받는다.
+
+\clearpage
+\section{오차역전파법}
+
+\clearpage
+\section{학습관련기술들}
+
+\clearpage
+\section{합성곱 신경망}
+
+\clearpage
+\section{딥러닝}
+
 
 \end{document}          
